@@ -42,6 +42,7 @@ public class BallScript : MonoBehaviour {
 	}
 
 	public void Echo(){
+		Debug.Log("hi from: " + this.gameObject.name);
 	}
 
 }
