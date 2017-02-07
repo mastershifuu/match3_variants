@@ -133,8 +133,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	void FreeGem (GameObject Gem){
-		iTween.ScaleTo (Gem, iTween.Hash("x", 0,"z", 0, "time", 2.0f));
-		Gem.tag = "NotActive";
+		// iTween.ScaleTo (Gem, iTween.Hash("x", 0,"z", 0, "time", 2.0f));
+		// Gem.tag = "NotActive";
+		Gem.GetComponent<BallScript>().DestroyMatched();
 		//Gem.SetActive (false);
 	}
 

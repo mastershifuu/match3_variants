@@ -37,7 +37,11 @@ public class BallScript : MonoBehaviour {
 	}
 
 	public void DestroyMatched(){
-		
+		iTween.ScaleTo (this.gameObject, iTween.Hash("x", 0,"z", 0, "time", 2.0f));
+		this.gameObject.tag = "NotActive";	
+	}
+
+	public void Echo(){
 	}
 
 }
