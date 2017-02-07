@@ -39,7 +39,7 @@ public class GameBoardCSharp : MonoBehaviour {
 
 		for (int i = 0; i < cols; i++) {
 			for (int j = 0; j < rows; j++) {
-				GameObject newBlock = (GameObject)Instantiate(ball,new Vector3(i,0,j),Quaternion.identity);
+				GameObject newBlock = (GameObject)Instantiate(ball,new Vector3(i,0,j), Quaternion.identity);
 				newBlock.name="Block: " + i + "," + j;
 				Color blockColor;
 
@@ -52,7 +52,5 @@ public class GameBoardCSharp : MonoBehaviour {
 			}
 		}
 		transform.position= new Vector3(cols-15,0,rows-15);
-
-		
 	}
 }

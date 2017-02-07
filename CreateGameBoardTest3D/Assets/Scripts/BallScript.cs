@@ -36,5 +36,8 @@ public class BallScript : MonoBehaviour {
 		return (iTween.Count(this.gameObject) > 0);
 	}
 
+	public void DestroyMatched(){
+		
+	}
 
 }

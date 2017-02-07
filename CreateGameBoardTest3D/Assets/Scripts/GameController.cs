@@ -64,9 +64,9 @@ public class GameController : MonoBehaviour {
 			}
 	}
  
-	int BallsDestroyer(GameObject tempFirst, GameObject tempSecond){
-		int a = DelByTag(tempFirst);
-		int b = DelByTag(tempSecond);
+	int BallsDestroyer(GameObject first, GameObject second){
+		int a = DelByTag(first);
+		int b = DelByTag(second);
 		if ((a == 0 && b == 1)|| (a == 1 && b == 0) || (a == 0 && b == 0)){
 			BallDown();
 			return 0;
@@ -133,31 +133,27 @@ public class GameController : MonoBehaviour {
 	}
 
 	void FreeGem (GameObject Gem){
-
 		iTween.ScaleTo (Gem, iTween.Hash("x", 0,"z", 0, "time", 2.0f));
 		Gem.tag = "NotActive";
 		//Gem.SetActive (false);
-
-
 	}
 
 	void MoveDown(){
-
 		List<GameObject> AllGem = new List<GameObject>();
 
-		for(int i = 0; i < 5; i++){
-			GameObject[] TampAllGem = GameObject.FindGameObjectsWithTag(objectColors[i]);
+		for(int i = 0; i < objectColors.Length; i++){
+			GameObject[] TampAllGem = GemsByColor(i);
 			for(int j = 0; j < TampAllGem.Length; j++){
 				AllGem.Add(TampAllGem[j]);
 			}
 			
 		}
-		GameObject[] NotActGem = GameObject.FindGameObjectsWithTag("NotActive");
+		// GameObject[] NotActGem = GameObject.FindGameObjectsWithTag("NotActive");
 
-		foreach (GameObject NotGem1 in NotActGem){
+		foreach (GameObject NotGem1 in NonActiveGems()){
 			Vector3 Coord = NotGem1.transform.position;
 			Coord.z++;
-			foreach(GameObject NotGem2 in NotActGem){ 
+			foreach(GameObject NotGem2 in NonActiveGems()){ 
 				if(Coord == NotGem2.transform.position){
 					Coord.z++;
 					break;
@@ -166,34 +162,34 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-		public void BallDown(){
+	public void BallDown(){
 		List<GameObject> AllGem = new List<GameObject>();
 		for(int i = 0; i < 5; i++){
-			GameObject[] TampAllGem = GameObject.FindGameObjectsWithTag(objectColors[i]);
-			for(int j = 0; j < TampAllGem.Length; j++){
-				AllGem.Add(TampAllGem[j]);
+			GameObject[] coloredGems = GemsByColor(i);
+			for(int j = 0; j < coloredGems.Length; j++){
+				AllGem.Add(coloredGems[j]);
 			}
 		}
-		GameObject[] EmptyBalls = GameObject.FindGameObjectsWithTag("NotActive");
-		foreach (GameObject ActGem in AllGem){
-			Vector3 Coord = ActGem.transform.position;
+		// GameObject[] EmptyBalls = GameObject.FindGameObjectsWithTag("NotActive");
+		foreach (GameObject activeGem in AllGem){
+			Vector3 currentPosition = activeGem.transform.position;
 			int Count = 0;
-			foreach (GameObject Check in EmptyBalls){
-				Vector3 CheckCoord = Check.transform.position;
-				if (CheckCoord.x == Coord.x){
-					if (CheckCoord.z < Coord.z){
+			foreach (GameObject gemToCheck in NonActiveGems()){
+				Vector3 CheckCoord = gemToCheck.transform.position;
+				if (CheckCoord.x == currentPosition.x){
+					if (CheckCoord.z < currentPosition.z){
 						Count++;
 					}
 				}
 			}
 			if (Count>0){
-				Vector3 NewCoord = Coord;
+				Vector3 NewCoord = currentPosition;
 				NewCoord.z -= Count;
-				iTween.MoveTo(ActGem.gameObject, NewCoord, 1.5f);
+				iTween.MoveTo(activeGem.gameObject, NewCoord, 1.5f);
 				Count = 0;
 			}
 		}
-	NewBalls();
+		NewBalls();
 	}
 
 	public void NewBalls(){
@@ -211,5 +207,13 @@ public class GameController : MonoBehaviour {
 				iTween.ScaleTo (NoActGem, iTween.Hash("x", 1,"z", 1, "time", 2.0f));
 				
 		}
+	}
+
+	private GameObject[] NonActiveGems() {
+		return GameObject.FindGameObjectsWithTag("NotActive");
+	}
+
+	private GameObject[] GemsByColor(int colorNumber){
+		return GameObject.FindGameObjectsWithTag(objectColors[colorNumber]);		
 	}
 }
